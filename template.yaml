@@ -21,11 +21,11 @@ Resources:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
         - AWSLambdaVPCAccessExecutionRole
-      VpcConfig:
-        SecurityGroupIds:
-          - sg-04f8c85f06509d131
-        SubnetIds:
-          - subnet-04bc3e751ab6242e9
+      # VpcConfig:
+      #   SecurityGroupIds:
+      #     - sg-04f8c85f06509d131
+      #   SubnetIds:
+      #     - subnet-04bc3e751ab6242e9
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -43,11 +43,11 @@ Resources:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
         - AWSLambdaVPCAccessExecutionRole
-      VpcConfig:
-        SecurityGroupIds:
-          - sg-04f8c85f06509d131
-        SubnetIds:
-          - subnet-00c06aa6c08755a1c
+      # VpcConfig:
+      #   SecurityGroupIds:
+      #     - sg-04f8c85f06509d131
+      #   SubnetIds:
+      #     - subnet-00c06aa6c08755a1c
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -74,11 +74,11 @@ Resources:
       CodeUri: handlers/game-of-thrones/
       Handler: app.lambdaHandler
       Runtime: nodejs10.x
-      VpcConfig:
-        SecurityGroupIds:
-          - sg-04f8c85f06509d131
-        SubnetIds:
-          - subnet-04bc3e751ab6242e9
+      # VpcConfig:
+      #   SecurityGroupIds:
+      #     - sg-04f8c85f06509d131
+      #   SubnetIds:
+      #     - subnet-04bc3e751ab6242e9
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api

@@ -7,6 +7,12 @@ infoStep: &infoStep
         - node --version
         - npm --version
 
+testStep: &testStep
+  - step:
+      name: Test step
+      script:
+        - npm run test
+
 prepareStep: &prepareStep
   - step:
       name: Prepare
@@ -55,6 +61,8 @@ deployS3AwsScript: &deployS3AwsScript
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 pipelines:    
   branches:
+    feature/*:
+      - <<: *testStep
     develop:
       - <<: *infoStep
       - <<: *prepareStep

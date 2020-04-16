@@ -6,6 +6,7 @@ infoStep: &infoStep
       script:
         - node --version
         - npm --version
+
 prepareStep: &prepareStep
   - step:
       name: Prepare
@@ -13,16 +14,17 @@ prepareStep: &prepareStep
         - npm install
       artifacts:
         - node_modules/**
+
 qualityStep: &qualityStep
   - step:
       name: Sonar Scanner
       script:
-        - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip
-        - unzip ./sonar-scanner-cli-4.2.0.1873.zip
-        - chmod +x sonar-scanner-4.2.0.1873/bin/sonar-scanner
-        - sonar-scanner-4.2.0.1873/bin/sonar-scanner -Dsonar.exclusions=sonar-scanner-4.2.0.1873.zip,sonar-scanner-4.2.0.1873/**/*,vendor/**/* -Dsonar.login=admin -Dsonar.password=admin -Dsonar.projectKey=sonar -Dsonar.projectName=sonar -Dsonar.projectVersion=1.0 -Dsonar.sources=.  -Dsonar.host.url=http://54.174.170.210:9000 -Dsonar.sourceEncoding=UTF-8 -Dsonar.analysis.mode=publish 
-        - echo "http://54.174.170.210:9000/dashboard/index/sonar"
-        #- npm run test
+        # - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip
+        # - unzip ./sonar-scanner-cli-4.2.0.1873.zip
+        # - chmod +x sonar-scanner-4.2.0.1873/bin/sonar-scanner
+        # - sonar-scanner-4.2.0.1873/bin/sonar-scanner -Dsonar.exclusions=sonar-scanner-4.2.0.1873.zip,sonar-scanner-4.2.0.1873/**/*,vendor/**/* -Dsonar.login=admin -Dsonar.password=admin -Dsonar.projectKey=sonar -Dsonar.projectName=sonar -Dsonar.projectVersion=1.0 -Dsonar.sources=.  -Dsonar.host.url=http://54.174.170.210:9000 -Dsonar.sourceEncoding=UTF-8 -Dsonar.analysis.mode=publish 
+        # - echo "http://54.174.170.210:9000/dashboard/index/sonar"
+        - npm run test
 
 securityStep: &securityStep
   - step:
@@ -47,7 +49,7 @@ deployS3AwsScript: &deployS3AwsScript
         - pipe: atlassian/aws-sam-deploy:0.3.2
           variables:
             S3_BUCKET: $AWS_BUCKET_NAME
-            STACK_NAME: 'stack-masisa-devs'
+            STACK_NAME: 'simple-sam-app'
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']

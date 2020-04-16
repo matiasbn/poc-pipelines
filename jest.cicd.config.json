@@ -1,0 +1,11 @@
+{
+    "testEnvironment": "node",
+    "verbose": true,
+    "roots": [
+        "tests/unit"
+    ],
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        "/.aws-sam/"
+    ]
+}

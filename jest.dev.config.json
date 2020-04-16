@@ -1,0 +1,14 @@
+{
+    "testEnvironment": "node",
+    "verbose": true,
+    "setupFiles": [
+        "./tests/config/dev.config.js"
+    ],
+    "roots": [
+        "tests/unit"
+    ],
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        "/.aws-sam/"
+    ]
+}

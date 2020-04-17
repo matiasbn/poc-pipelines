@@ -40,7 +40,7 @@ deployTestStep: &deployTestStep
             STACK_NAME: 'simple-sam-app-test'
             S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
-            WAIT_INTERVAL: 60
+            WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployStagingStep: &deployStagingStep
@@ -52,7 +52,7 @@ deployStagingStep: &deployStagingStep
             STACK_NAME: 'simple-sam-app-staging'
             S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
-            WAIT_INTERVAL: 60
+            WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployProdStep: &deployProdStep
@@ -64,7 +64,7 @@ deployProdStep: &deployProdStep
             STACK_NAME: 'simple-sam-app-prod'
             S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
-            WAIT_INTERVAL: 60
+            WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 

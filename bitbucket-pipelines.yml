@@ -31,16 +31,15 @@ securityStep: &securityStep
         - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
 
-deployTestStep: &deployTestStep
+deployStep: &deployStep
   - step:
-      name: Deploying to test stage
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-test'
             S3_BUCKET: $S3_BUCKET
-            WAIT: 'true'
-            WAIT_INTERVAL: 600
+            # WAIT: 'true'
+            # WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployStagingStep: &deployStagingStep
@@ -49,10 +48,8 @@ deployStagingStep: &deployStagingStep
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
-            STACK_NAME: 'simple-sam-app-staging'
+            STACK_NAME: 'simple-sam-app'
             S3_BUCKET: $S3_BUCKET
-            WAIT: 'true'
-            WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployProdStep: &deployProdStep
@@ -72,12 +69,15 @@ pipelines:
   default:
       # - <<: *installStep
       # - <<: *testStep
-      - <<: *deployTestStep
+      - step:
+          name: Deploying to testing stage
+          deployment: testing
+          <<: *deployStep
   branches:
     develop:
       # - <<: *qualityStep     
       # - <<: *securityStep
-      - <<: *deployTestStep
+      - <<: *deployStep
     release/*:
       # - <<: *qualityStep     
       # - <<: *securityStep

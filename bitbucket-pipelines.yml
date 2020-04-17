@@ -33,48 +33,37 @@ securityStep: &securityStep
 
 deployTestStep: &deployTestStep
   - step:
-      name: Deploying to corresponding stage
+      name: Deploying to test stage
       script:
-        - pipe: atlassian/aws-sam-deploy:0.3.2
+        - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-test'
-            S3_BUCKET: $AWS_BUCKET_NAME
-            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployStagingStep: &deployStagingStep
   - step:
-      name: Deploying to corresponding stage
+      name: Deploying to staging stage
       script:
-        - pipe: atlassian/aws-sam-deploy:0.3.2
+        - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-staging'
-            S3_BUCKET: $AWS_BUCKET_NAME
-            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployProdStep: &deployProdStep
   - step:
-      name: Deploying to corresponding stage
+      name: Deploying to prod stage
       script:
-        - pipe: atlassian/aws-sam-deploy:0.3.2
+        - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-prod'
-            S3_BUCKET: $AWS_BUCKET_NAME
-            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
 
 pipelines:
   default:
@@ -91,9 +80,4 @@ pipelines:
     master:
       - <<: *securityStep
       - <<: *deployProdStep
-      # - step:
-      #     name: Deploy to production
-      #     trigger: manual
-      #     deployment: production
-      #     <<: *deployStep
  

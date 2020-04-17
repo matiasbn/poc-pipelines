@@ -69,15 +69,17 @@ pipelines:
   default:
       - <<: *installStep
       - <<: *testStep
-      - <<: *qualityStep     
   branches:
     develop:
+      - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployTestStep
     release/*:
+      - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployStagingStep
     master:
+      - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployProdStep
  

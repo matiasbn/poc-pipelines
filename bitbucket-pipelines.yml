@@ -31,14 +31,47 @@ securityStep: &securityStep
         - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
 
-deployStep: &deployStep
+deployTestStep: &deployTestStep
   - step:
       name: Deploying to corresponding stage
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.2
           variables:
+            STACK_NAME: 'simple-sam-app-test'
             S3_BUCKET: $AWS_BUCKET_NAME
-            STACK_NAME: 'simple-sam-app'
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+            WAIT: 'true'
+            WAIT_INTERVAL: 60
+            CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
+deployStagingStep: &deployStagingStep
+  - step:
+      name: Deploying to corresponding stage
+      script:
+        - pipe: atlassian/aws-sam-deploy:0.3.2
+          variables:
+            STACK_NAME: 'simple-sam-app-staging'
+            S3_BUCKET: $AWS_BUCKET_NAME
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+            WAIT: 'true'
+            WAIT_INTERVAL: 60
+            CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
+deployProdStep: &deployProdStep
+  - step:
+      name: Deploying to corresponding stage
+      script:
+        - pipe: atlassian/aws-sam-deploy:0.3.2
+          variables:
+            STACK_NAME: 'simple-sam-app-prod'
+            S3_BUCKET: $AWS_BUCKET_NAME
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
@@ -51,12 +84,16 @@ pipelines:
   branches:
     develop:
       - <<: *securityStep
-      - <<: *deployStep
+      - <<: *deployTestStep
+    release/*:
+      - <<: *securityStep
+      - <<: *deployStagingStep
     master:
       - <<: *securityStep
-      - step:
-          name: Deploy to production
-          trigger: manual
-          deployment: production
-          <<: *deployStep
+      - <<: *deployProdStep
+      # - step:
+      #     name: Deploy to production
+      #     trigger: manual
+      #     deployment: production
+      #     <<: *deployStep
  

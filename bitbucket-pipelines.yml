@@ -34,19 +34,14 @@ securityStep: &securityStep
 deployTestStep: &deployTestStep
   - step:
       name: Deploying to test stage
-      caches:
-        - pip
       script:
-        - sudo apt install python3-pip
-        - pip install aws-sam-cli
-        - 
-        # - pipe: atlassian/aws-sam-deploy:0.3.3
-        #   variables:
-        #     STACK_NAME: 'simple-sam-app-test'
-        #     S3_BUCKET: $S3_BUCKET
-        #     WAIT: 'true'
-        #     WAIT_INTERVAL: 600
-        #     CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+        - pipe: atlassian/aws-sam-deploy:0.3.3
+          variables:
+            STACK_NAME: 'simple-sam-app-test'
+            S3_BUCKET: $S3_BUCKET
+            WAIT: 'true'
+            WAIT_INTERVAL: 600
+            CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployStagingStep: &deployStagingStep
   - step:

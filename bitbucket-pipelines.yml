@@ -42,24 +42,17 @@ deployS3AwsScript: &deployS3AwsScript
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
-pipelines:    
+pipelines:
+  default:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
   branches:
-    feature/*:
-      - <<: *installStep
-      - <<: *testStep
-      - <<: *qualityStep
-
     develop:
-      - <<: *installStep
-      - <<: *testStep
-      - <<: *qualityStep
       - <<: *securityStep
       - <<: *deployS3AwsScript
 
     master:
-      - <<: *installStep
-      - <<: *testStep
-      - <<: *qualityStep
       - <<: *securityStep
       - step:
           name: Deploy to production

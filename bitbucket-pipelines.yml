@@ -74,15 +74,15 @@ pipelines:
       - <<: *testStep
   branches:
     develop:
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployTestStep
     release/*:
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployStagingStep
     master:
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployProdStep
  

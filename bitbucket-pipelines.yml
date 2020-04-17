@@ -26,14 +26,14 @@ qualityStep: &qualityStep
 
 securityStep: &securityStep
   - step:
-      name: Security
+      name: Checking security audit of npm packages
       script:
         - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
 
-deployS3AwsScript: &deployS3AwsScript
+deployStep: &deployStep
   - step:
-      name: deployS3AwsScript
+      name: Deploying to corresponding stage
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.2
           variables:
@@ -42,6 +42,7 @@ deployS3AwsScript: &deployS3AwsScript
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
 pipelines:
   default:
       - <<: *installStep
@@ -50,13 +51,12 @@ pipelines:
   branches:
     develop:
       - <<: *securityStep
-      - <<: *deployS3AwsScript
-
+      - <<: *deployStep
     master:
       - <<: *securityStep
       - step:
           name: Deploy to production
           trigger: manual
           deployment: production
-          <<: *deployS3AwsScript
+          <<: *deployStep
  

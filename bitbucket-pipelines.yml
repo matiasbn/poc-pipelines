@@ -38,6 +38,7 @@ deployTestStep: &deployTestStep
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-test'
+            S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
@@ -49,6 +50,7 @@ deployStagingStep: &deployStagingStep
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-staging'
+            S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
@@ -60,6 +62,7 @@ deployProdStep: &deployProdStep
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-prod'
+            S3_BUCKET: $S3_BUCKET
             WAIT: 'true'
             WAIT_INTERVAL: 60
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']

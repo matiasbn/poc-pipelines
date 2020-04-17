@@ -1,15 +1,8 @@
 image: atlassian/default-image:2
 
-infoStep: &infoStep
+installStep: &installStep
   - step:
-      name: Info
-      script:
-        - node --version
-        - npm --version
-
-prepareStep: &prepareStep
-  - step:
-      name: Prepare
+      name: Installing npm packages
       script:
         - npm install
       artifacts:
@@ -17,7 +10,7 @@ prepareStep: &prepareStep
 
 testStep: &testStep
   - step:
-      name: Test step
+      name: Running tests
       script:
         - npm run test
 
@@ -62,19 +55,18 @@ deployS3AwsScript: &deployS3AwsScript
 pipelines:    
   branches:
     feature/*:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *installStep
       - <<: *testStep
+
     develop:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *installStep
       - <<: *qualityStep
       - <<: *securityStep
      # - <<: *buildStep
       - <<: *deployS3AwsScript
+
     test:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *installStep
       - <<: *securityStep
       #- <<: *buildStep
       - step:
@@ -82,9 +74,9 @@ pipelines:
           trigger: manual
           deployment: test
           <<: *deployS3AwsScript
+
     master:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *installStep
       - <<: *securityStep
       #- <<: *buildStep
       - step:

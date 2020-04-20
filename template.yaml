@@ -11,11 +11,10 @@ Globals:
     Timeout: 3
 
 Resources:
-  HelloWorldFunction:
+  HelloWorldFunction1:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: handlers/hello-world1/
-      Handler: app.lambdaHandler
+      Handler: handlers/hello-world-1.lambdaHandler
       Runtime: nodejs10.x
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
@@ -36,8 +35,7 @@ Resources:
   HelloWorldFunction2:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: handlers/hello-world2/
-      Handler: app.lambdaHandler
+      Handler: handlers/hello-world-2.lambdaHandler
       Runtime: nodejs10.x
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
@@ -58,8 +56,7 @@ Resources:
   HelloWorldFunction3:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: handlers/hello-world3/
-      Handler: app.lambdaHandler
+      Handler: handlers/hello-world-3.lambdaHandler
       Runtime: nodejs10.x
       Events:
         HelloWorld:
@@ -71,8 +68,7 @@ Resources:
   GameOfThrones:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: handlers/game-of-thrones/
-      Handler: app.lambdaHandler
+      Handler: handlers/game-of-thrones.lambdaHandler
       Runtime: nodejs10.x
       # VpcConfig:
       #   SecurityGroupIds:
@@ -93,9 +89,18 @@ Outputs:
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
+  GameOfThrones:
+    Description: "Calls got api ARN"
+    Value: !GetAtt GameOfThrones.Arn
+  HelloWorldFunction1:
+    Description: "Hello World Lambda Function1 ARN"
+    Value: !GetAtt HelloWorldFunction1.Arn
+  HelloWorldFunction2:
+    Description: "Hello World Lambda Function2 ARN"
+    Value: !GetAtt HelloWorldFunction2.Arn
+  HelloWorldFunction3:
+    Description: "Hello World Lambda Function3 ARN"
+    Value: !GetAtt HelloWorldFunction3.Arn
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Value: !GetAtt HelloWorldFunction1Role.Arn

@@ -15,9 +15,8 @@ let response;
  *
  */
 exports.lambdaHandler = async (event, context) => {
-  const result = await axios.get('https://anapioficeandfire.com/api/characters/583');
-  console.log(result.data.name);
   try {
+    const result = await axios.get('https://anapioficeandfire.com/api/characters/583');
     // const ret = await axios(url);
     response = {
       statusCode: 200,
@@ -26,8 +25,7 @@ exports.lambdaHandler = async (event, context) => {
         // location: ret.data.trim()
       }),
     };
-  } catch (err) {
-    console.log(err);
+  } catch (err) /* istanbul ignore next */{
     return err;
   }
 

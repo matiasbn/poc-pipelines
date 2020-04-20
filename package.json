@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --config jest.cicd.config.json",
     "test:dev": "jest --config jest.dev.config.json",
-    "test:specific": "jest --config jest.dev.config.json --watch helloworld1.test.js"
+    "test:specific": "jest --config jest.dev.config.json --watch gameOfThrones.test.js",
+    "check-coverage": "http-server -o coverage/lcov-report"
   },
   "repository": {
     "type": "git",
@@ -25,10 +26,19 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5",
     "jest": "^25.3.0"
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
-    "debug": "^4.1.1"
+    "axios": "^0.19.2",
+    "dayjs": "^1.8.24",
+    "debug": "^4.1.1",
+    "http-server": "^0.12.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
   }
 }

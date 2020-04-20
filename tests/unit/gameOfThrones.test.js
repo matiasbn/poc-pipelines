@@ -2,14 +2,14 @@ const appRoot = require('app-root-path');
 const path = require('path');
 const debug = require('debug')(process.env.DEBUG_NAMESPACE + path.basename(__filename));
 
-const helloWorld1 = require(`${appRoot}/handlers/hello-world-1`).lambdaHandler;
+const lambda = require(`${appRoot}/handlers/game-of-thrones`).lambdaHandler;
 
-describe('helloworld1 unit testing', () => {
+describe('gameOfThrones unit testing', () => {
   test('testing the response value', async () => {
-    const response = await helloWorld1();
+    const response = await lambda();
     const body = JSON.parse(response.body);
     debug(body);
-    // expect(body.message).toBe('hello world1');
+    // expect(body.message).toBe('Jon Snow');
     expect(true);
   });
 });

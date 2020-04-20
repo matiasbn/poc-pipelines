@@ -20,14 +20,13 @@ exports.lambdaHandler = async (event, context) => {
     response = {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'hello world1',
+        message: 'hello world1-staging',
         // location: ret.data.trim()
       }),
     };
+    return response;
   } catch (err) {
-    console.log(err);
+    /* istanbul ignore next */
     return err;
   }
-
-  return response;
 };

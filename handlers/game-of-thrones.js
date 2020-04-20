@@ -1,4 +1,4 @@
-// const axios = require('axios')
+const axios = require('axios');
 // const url = 'http://checkip.amazonaws.com/';
 let response;
 
@@ -16,16 +16,16 @@ let response;
  */
 exports.lambdaHandler = async (event, context) => {
   try {
+    const result = await axios.get('https://anapioficeandfire.com/api/characters/583');
     // const ret = await axios(url);
     response = {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'hello world2',
+        message: `${result.data.name}-staging`,
         // location: ret.data.trim()
       }),
     };
-  } catch (err) {
-    console.log(err);
+  } catch (err) /* istanbul ignore next */{
     return err;
   }
 

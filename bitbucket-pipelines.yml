@@ -1,85 +1,99 @@
 image: atlassian/default-image:2
 
-infoStep: &infoStep
+installStep: &installStep
   - step:
-      name: Info
-      script:
-        - node --version
-        - npm --version
-
-prepareStep: &prepareStep
-  - step:
-      name: Prepare
+      name: Installing npm packages
+      caches: 
+        - node
       script:
         - npm install
       artifacts:
         - node_modules/**
 
+testStep: &testStep
+  - step:
+      name: Running tests
+      script:
+        - npm run test
+
 qualityStep: &qualityStep
   - step:
       name: Sonar Scanner
       script:
-        # - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip
-        # - unzip ./sonar-scanner-cli-4.2.0.1873.zip
-        # - chmod +x sonar-scanner-4.2.0.1873/bin/sonar-scanner
-        # - sonar-scanner-4.2.0.1873/bin/sonar-scanner -Dsonar.exclusions=sonar-scanner-4.2.0.1873.zip,sonar-scanner-4.2.0.1873/**/*,vendor/**/* -Dsonar.login=admin -Dsonar.password=admin -Dsonar.projectKey=sonar -Dsonar.projectName=sonar -Dsonar.projectVersion=1.0 -Dsonar.sources=.  -Dsonar.host.url=http://54.174.170.210:9000 -Dsonar.sourceEncoding=UTF-8 -Dsonar.analysis.mode=publish 
-        # - echo "http://54.174.170.210:9000/dashboard/index/sonar"
-        - npm run test
+        - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip
+        - unzip ./sonar-scanner-cli-4.2.0.1873.zip
+        - chmod +x sonar-scanner-4.2.0.1873/bin/sonar-scanner
+        - sonar-scanner-4.2.0.1873/bin/sonar-scanner -Dsonar.exclusions=sonar-scanner-4.2.0.1873.zip,sonar-scanner-4.2.0.1873/**/*,vendor/**/* -Dsonar.login=admin -Dsonar.password=admin -Dsonar.projectKey=sonar -Dsonar.projectName=sonar -Dsonar.projectVersion=1.0 -Dsonar.sources=.  -Dsonar.host.url=http://54.174.170.210:9000 -Dsonar.sourceEncoding=UTF-8 -Dsonar.analysis.mode=publish 
+        - echo "http://54.174.170.210:9000/dashboard/index/sonar"
 
 securityStep: &securityStep
   - step:
-      name: Security
+      name: Checking security audit of npm packages
       script:
         - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
-        
-buildStep: &buildStep
-  - step:
-      name: Build
-      script:
-        - npm run build
-      artifacts:
-        - dist/**
-        - build/**
 
-deployS3AwsScript: &deployS3AwsScript
+deployTestStep: &deployTestStep
   - step:
-      name: deployS3AwsScript
+      name: 'Deploying to test stage'
       script:
-        - pipe: atlassian/aws-sam-deploy:0.3.2
+        - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
-            S3_BUCKET: $AWS_BUCKET_NAME
-            STACK_NAME: 'simple-sam-app'
-            WAIT: 'true'
-            WAIT_INTERVAL: 60
+            STACK_NAME: 'simple-sam-app-test'
+            S3_BUCKET: $S3_BUCKET
+            # WAIT: 'true'
+            # WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
-pipelines:    
+
+deployStagingStep: &deployStagingStep
+  - step:
+      name: 'Deploying to staging stage'
+      script:
+        - pipe: atlassian/aws-sam-deploy:0.3.3
+          variables:
+            STACK_NAME: 'simple-sam-app-staging'
+            S3_BUCKET: $S3_BUCKET
+            CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
+deployProdStep: &deployProdStep
+  - step:
+      name: 'Deploying to prod stage'
+      script:
+        - pipe: atlassian/aws-sam-deploy:0.3.3
+          variables:
+            STACK_NAME: 'simple-sam-app-prod'
+            S3_BUCKET: $S3_BUCKET
+            CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
+
+
+pipelines:
   branches:
+    feature/*:
+      - <<: *installStep
+      - <<: *testStep
     develop:
-      - <<: *infoStep
-      - <<: *prepareStep
-      - <<: *qualityStep
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
       - <<: *securityStep
-     # - <<: *buildStep
-      - <<: *deployS3AwsScript
-    test:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *deployTestStep
+    release/*:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
       - <<: *securityStep
-      #- <<: *buildStep
-      - step:
-          name: Deploy to test
-          trigger: manual
-          deployment: test
-          <<: *deployS3AwsScript
+      - <<: *deployStagingStep
+    hotfix/*:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
+      - <<: *deployTestStep
+      - <<: *deployProdStep
     master:
-      - <<: *infoStep
-      - <<: *prepareStep
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
       - <<: *securityStep
-      #- <<: *buildStep
-      - step:
-          name: Deploy to production
-          trigger: manual
-          deployment: production
-          <<: *deployS3AwsScript
+      - <<: *deployProdStep
  

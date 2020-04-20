@@ -65,17 +65,23 @@ deployProdStep: &deployProdStep
 
 
 pipelines:
+  # default:
+  #     - <<: *installStep
+  #     - <<: *testStep
   branches:
     feature/*:
-      - step:
-          script:
-            - echo 'testing the feature pipeline'
+      - <<: *installStep
+      - <<: *testStep
       - <<: *deployTestStep
     develop:
       # - <<: *qualityStep     
       # - <<: *securityStep
       - <<: *deployTestStep
     release/*:
+      # - <<: *qualityStep     
+      # - <<: *securityStep
+      - <<: *deployStagingStep
+    hotfix/*:
       # - <<: *qualityStep     
       # - <<: *securityStep
       - <<: *deployStagingStep

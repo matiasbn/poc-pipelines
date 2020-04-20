@@ -65,28 +65,32 @@ deployProdStep: &deployProdStep
 
 
 pipelines:
-  # default:
-  #     - <<: *installStep
-  #     - <<: *testStep
   branches:
     feature/*:
       - <<: *installStep
       - <<: *testStep
-      - <<: *deployTestStep
+      # - <<: *deployTestStep
+      - <<: *deployStagingStep
     develop:
-      # - <<: *qualityStep     
-      # - <<: *securityStep
+      - <<: *installStep
+      - <<: *testStep
       - <<: *deployTestStep
     release/*:
-      # - <<: *qualityStep     
-      # - <<: *securityStep
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployStagingStep
     hotfix/*:
-      # - <<: *qualityStep     
-      # - <<: *securityStep
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployStagingStep
     master:
-      # - <<: *qualityStep     
-      # - <<: *securityStep
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployProdStep
  

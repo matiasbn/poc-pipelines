@@ -45,33 +45,32 @@ deployTestStep: &deployTestStep
 
 deployStagingStep: &deployStagingStep
   - step:
-      name: Deploying to staging stage
+      name: 'Deploying to staging stage'
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
-            STACK_NAME: 'simple-sam-app'
+            STACK_NAME: 'simple-sam-app-staging'
             S3_BUCKET: $S3_BUCKET
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 deployProdStep: &deployProdStep
   - step:
-      name: Deploying to prod stage
+      name: 'Deploying to prod stage'
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
             STACK_NAME: 'simple-sam-app-prod'
             S3_BUCKET: $S3_BUCKET
-            WAIT: 'true'
-            WAIT_INTERVAL: 600
             CAPABILITIES: ['CAPABILITY_IAM', 'CAPABILITY_AUTO_EXPAND']
 
 
 pipelines:
-  default:
-      # - <<: *installStep
-      # - <<: *testStep
-      - <<: *deployTestStep
   branches:
+    feature/*:
+      - step:
+          script:
+            - echo 'testing the feature pipeline'
+      - <<: *deployTestStep
     develop:
       # - <<: *qualityStep     
       # - <<: *securityStep

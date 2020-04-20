@@ -31,8 +31,9 @@ securityStep: &securityStep
         - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
 
-deployStep: &deployStep
+deployTestStep: &deployTestStep
   - step:
+      name: 'Deploying to test stage'
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
@@ -69,15 +70,12 @@ pipelines:
   default:
       # - <<: *installStep
       # - <<: *testStep
-      - step:
-          name: Deploying to testing stage
-          deployment: testing
-          <<: *deployStep
+      - <<: *deployTestStep
   branches:
     develop:
       # - <<: *qualityStep     
       # - <<: *securityStep
-      - <<: *deployStep
+      - <<: *deployTestStep
     release/*:
       # - <<: *qualityStep     
       # - <<: *securityStep

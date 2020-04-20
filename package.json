@@ -30,6 +30,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "axios": "^0.19.2",
+    "dayjs": "^1.8.24",
     "debug": "^4.1.1"
   }
 }

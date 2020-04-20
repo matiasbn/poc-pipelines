@@ -30,7 +30,7 @@ securityStep: &securityStep
   - step:
       name: Checking security audit of npm packages
       script:
-        - npm install npm@latest -g
+        # - npm install npm@latest -g
         - npm audit --audit-level high --production && npm audit fix
 
 deployTestStep: &deployTestStep

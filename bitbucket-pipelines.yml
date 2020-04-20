@@ -68,22 +68,32 @@ deployProdStep: &deployProdStep
 
 pipelines:
   branches:
-    '{master,develop,feature/*,release/*,hotfix/*}':
+    feature/*:
       - <<: *installStep
       - <<: *testStep
-    '{master,develop,release/*,hotfix/*}':
+    develop:
+      - <<: *installStep
+      - <<: *testStep
       - <<: *qualityStep     
       - <<: *securityStep
-    # feature/*:
-    #   - <<: *installStep
-    #   - <<: *testStep
-    develop:
       - <<: *deployTestStep
     release/*:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployStagingStep
     hotfix/*:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployTestStep
       - <<: *deployProdStep
     master:
+      - <<: *installStep
+      - <<: *testStep
+      - <<: *qualityStep     
+      - <<: *securityStep
       - <<: *deployProdStep
  

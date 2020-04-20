@@ -3,6 +3,8 @@ image: atlassian/default-image:2
 installStep: &installStep
   - step:
       name: Installing npm packages
+      caches: 
+        - node
       script:
         - npm install
       artifacts:

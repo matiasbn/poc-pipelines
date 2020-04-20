@@ -26,7 +26,7 @@ exports.lambdaHandler = async (event, context) => {
     };
     return response;
   } catch (err) {
-    console.log(err);
+    /* istanbul ignore next */
     return err;
   }
 };

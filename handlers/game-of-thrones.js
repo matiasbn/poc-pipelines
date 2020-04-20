@@ -25,8 +25,7 @@ exports.lambdaHandler = async (event, context) => {
         // location: ret.data.trim()
       }),
     };
-  } catch (err) {
-    console.log(err);
+  } catch (err) /* istanbul ignore next */{
     return err;
   }
 

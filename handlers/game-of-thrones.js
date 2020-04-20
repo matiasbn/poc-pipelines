@@ -15,9 +15,8 @@ let response;
  *
  */
 exports.lambdaHandler = async (event, context) => {
-  const result = await axios.get('https://anapioficeandfire.com/api/characters/583');
-  console.log(result.data.name);
   try {
+    const result = await axios.get('https://anapioficeandfire.com/api/characters/583');
     // const ret = await axios(url);
     response = {
       statusCode: 200,

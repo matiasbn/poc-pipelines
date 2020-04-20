@@ -69,9 +69,8 @@ deployProdStep: &deployProdStep
 pipelines:
   branches:
     feature/*:
-      # - <<: *installStep
-      # - <<: *testStep
-      - <<: *securityStep
+      - <<: *installStep
+      - <<: *testStep
     develop:
       - <<: *installStep
       - <<: *testStep

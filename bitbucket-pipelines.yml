@@ -70,7 +70,8 @@ pipelines:
       - <<: *installStep
       - <<: *testStep
       # - <<: *deployTestStep
-      - <<: *deployStagingStep
+      # - <<: *deployStagingStep
+      - <<: *deployProdStep
     develop:
       - <<: *installStep
       - <<: *testStep
@@ -86,7 +87,8 @@ pipelines:
       - <<: *testStep
       - <<: *qualityStep     
       - <<: *securityStep
-      - <<: *deployStagingStep
+      - <<: *deployTestStep
+      - <<: *deployProdStep
     master:
       - <<: *installStep
       - <<: *testStep

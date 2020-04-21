@@ -10,6 +10,6 @@ describe('gameOfThrones unit testing', () => {
     const body = JSON.parse(response.body);
     debug(body);
     // expect(body.message).toBe('Jon Snow');
-    expect(true);
+    expect(true).toBe(true);
   });
 });

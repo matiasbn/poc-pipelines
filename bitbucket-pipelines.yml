@@ -31,7 +31,7 @@ securityStep: &securityStep
       name: Checking security audit of npm packages
       script:
         - npm install npm@latest -g
-        - npm audit --audit-level=low --production && npm audit fix
+        - npm audit --audit-level=low --production
 
 deployTestStep: &deployTestStep
   - step:
@@ -71,6 +71,7 @@ pipelines:
     feature/*:
       - <<: *installStep
       - <<: *testStep
+      - <<: *securityStep
   branches:
     develop:
       - <<: *installStep

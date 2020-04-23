@@ -79,13 +79,13 @@ pipelines:
     develop:
       - <<: *installStep
       - <<: *testStep
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployTestStep
     release/*:
       - <<: *installStep
       - <<: *testStep
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployStagingStep
     hotfix/*:
@@ -94,7 +94,7 @@ pipelines:
     master:
       - <<: *installStep
       - <<: *testStep
-      - <<: *qualityStep     
+      # - <<: *qualityStep     
       - <<: *securityStep
       - <<: *deployProdStep
  

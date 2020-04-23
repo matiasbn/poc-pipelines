@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-push": "npm test --silent && npm audit --production --audit-level=low",
+    "pre-commit": "npm test --silent && npm audit --production --audit-level=low"
   }
 }

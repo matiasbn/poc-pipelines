@@ -67,10 +67,11 @@ deployProdStep: &deployProdStep
 
 
 pipelines:
-  branches:
+  pull-requests:
     feature/*:
       - <<: *installStep
       - <<: *testStep
+  branches:
     develop:
       - <<: *installStep
       - <<: *testStep

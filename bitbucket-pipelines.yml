@@ -31,11 +31,12 @@ securityStep: &securityStep
       name: Checking security audit of npm packages
       script:
         - npm install npm@latest -g
-        - npm audit --audit-level high --production && npm audit fix
+        - npm audit --audit-level=low --production
 
 deployTestStep: &deployTestStep
   - step:
       name: 'Deploying to test stage'
+      deployment: Test
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
@@ -48,6 +49,7 @@ deployTestStep: &deployTestStep
 deployStagingStep: &deployStagingStep
   - step:
       name: 'Deploying to staging stage'
+      deployment: Staging
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
@@ -58,6 +60,7 @@ deployStagingStep: &deployStagingStep
 deployProdStep: &deployProdStep
   - step:
       name: 'Deploying to prod stage'
+      deployment: Production
       script:
         - pipe: atlassian/aws-sam-deploy:0.3.3
           variables:
@@ -67,10 +70,12 @@ deployProdStep: &deployProdStep
 
 
 pipelines:
-  branches:
+  pull-requests:
     feature/*:
       - <<: *installStep
       - <<: *testStep
+      - <<: *securityStep
+  branches:
     develop:
       - <<: *installStep
       - <<: *testStep

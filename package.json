@@ -38,7 +38,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm test && npm audit --audit-level high --production"
+      "pre-push": "npm test && npm audit --audit-level=low --production"
     }
   }
 }

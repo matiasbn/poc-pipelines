@@ -77,20 +77,18 @@ pipelines:
       - <<: *installStep
       - <<: *testStep
       - <<: *securityStep
-  branches:
-    feature/*:
-      - <<: *qualityStep     
+  branches:     
     develop:
       - <<: *installStep
       - <<: *testStep
-      # - <<: *qualityStep     
       - <<: *securityStep
+      - <<: *qualityStep     
       - <<: *deployTestStep
     release/*:
       - <<: *installStep
       - <<: *testStep
-      # - <<: *qualityStep     
       - <<: *securityStep
+      - <<: *qualityStep     
       - <<: *deployStagingStep
     hotfix/*:
       - <<: *installStep
@@ -98,7 +96,7 @@ pipelines:
     master:
       - <<: *installStep
       - <<: *testStep
-      # - <<: *qualityStep     
       - <<: *securityStep
+      - <<: *qualityStep     
       - <<: *deployProdStep
  

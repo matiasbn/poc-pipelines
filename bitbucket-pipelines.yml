@@ -29,7 +29,7 @@ qualityStep: &qualityStep
         # - echo "http://54.174.170.210:9000/dashboard/index/sonar"
         # - npm install axios
         # - node pipeline-scripts/sonar-script.js
-        - sudo apt-get install jq
+        - apt-get install jq
 
 securityStep: &securityStep
   - step:

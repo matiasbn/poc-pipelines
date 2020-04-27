@@ -29,7 +29,8 @@ qualityStep: &qualityStep
         # - echo "http://54.174.170.210:9000/dashboard/index/sonar"
         # - npm install axios
         # - node pipeline-scripts/sonar-script.js
-        - apt-get install jq
+        - RESULT=$(curl -X GET 'http://54.174.170.210:9000/api/qualitygates/project_status?projectKey=sonar' | jq -e .projectStatus.status)
+        - if [ $RESULT = '"OK"' ]; then exit 0; else exit 1; fi
 
 securityStep: &securityStep
   - step:
